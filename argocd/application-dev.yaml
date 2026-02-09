@@ -9,7 +9,7 @@ spec:
   project: default
   
   source:
-    repoURL: https://github.com/YOUR_USERNAME/msgapp-helm.git
+    repoURL: https://github.com/1shailendra2/chart.git
     targetRevision: main
     path: helm-chart
     helm:

@@ -126,7 +126,8 @@ ingress:
     backend: /api
 
 # Image pull secrets (if using private registry)
-imagePullSecrets: []
+imagePullSecrets: 
+  - name: acr-secret
 
 # Common labels
 commonLabels: {}
