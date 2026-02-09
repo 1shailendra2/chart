@@ -51,6 +51,8 @@ mongodb:
 
 # Dev domain
 ingress:
-  host: msgapp-dev.local
+  enabled: true
+  className: nginx
+  host: secondbrainbackend.me
   tls:
     enabled: false
