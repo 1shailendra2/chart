@@ -8,7 +8,7 @@ frontend:
   image:
     repository: chatregi.azurecr.io/msgapp-frontend
     pullPolicy: IfNotPresent
-    tag: "cdd3bc1189658a258c3b4db124a55ac87dbaf5cf"
+    tag: "cf70584dfe583593949cf0dc70ac86e196cf44ac"
   service:
     type: ClusterIP
     port: 3000
@@ -32,7 +32,7 @@ backend:
   image:
     repository: chatregi.azurecr.io/msgapp-backend
     pullPolicy: IfNotPresent
-    tag: "cdd3bc1189658a258c3b4db124a55ac87dbaf5cf"
+    tag: "cf70584dfe583593949cf0dc70ac86e196cf44ac"
   service:
     type: ClusterIP
     port: 5000
@@ -59,7 +59,7 @@ worker:
   image:
     repository: chatregi.azurecr.io/msgapp-worker
     pullPolicy: IfNotPresent
-    tag: "cdd3bc1189658a258c3b4db124a55ac87dbaf5cf"
+    tag: "cf70584dfe583593949cf0dc70ac86e196cf44ac"
   resources:
     limits:
       cpu: 500m
