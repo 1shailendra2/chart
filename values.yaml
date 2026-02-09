@@ -6,9 +6,9 @@
 frontend:
   replicaCount: 2
   image:
-    repository: your-registry/msgapp-frontend
+    repository: chatregi.azurecr.io/msgapp-frontend
     pullPolicy: IfNotPresent
-    tag: "latest"
+    tag: "cdd3bc1189658a258c3b4db124a55ac87dbaf5cf"
   service:
     type: ClusterIP
     port: 3000
@@ -30,9 +30,9 @@ frontend:
 backend:
   replicaCount: 2
   image:
-    repository: your-registry/msgapp-backend
+    repository: chatregi.azurecr.io/msgapp-backend
     pullPolicy: IfNotPresent
-    tag: "latest"
+    tag: "cdd3bc1189658a258c3b4db124a55ac87dbaf5cf"
   service:
     type: ClusterIP
     port: 5000
@@ -57,9 +57,9 @@ backend:
 worker:
   replicaCount: 2
   image:
-    repository: your-registry/msgapp-worker
+    repository: chatregi.azurecr.io/msgapp-worker
     pullPolicy: IfNotPresent
-    tag: "latest"
+    tag: "cdd3bc1189658a258c3b4db124a55ac87dbaf5cf"
   resources:
     limits:
       cpu: 500m
