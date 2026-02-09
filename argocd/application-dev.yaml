@@ -11,7 +11,7 @@ spec:
   source:
     repoURL: https://github.com/1shailendra2/chart.git
     targetRevision: main
-    path: helm-chart
+    path: .
     helm:
       valueFiles:
         - values.yaml
