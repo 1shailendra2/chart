@@ -1,0 +1,48 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: msgapp-worker
+  labels:
+    app: msgapp
+    component: worker
+spec:
+  replicas: {{ .Values.worker.replicaCount }}
+  selector:
+    matchLabels:
+      app: msgapp
+      component: worker
+  template:
+    metadata:
+      labels:
+        app: msgapp
+        component: worker
+    spec:
+      {{- if .Values.imagePullSecrets }}
+      imagePullSecrets:
+        {{- toYaml .Values.imagePullSecrets | nindent 8 }}
+      {{- end }}
+      containers:
+      - name: worker
+        image: "{{ .Values.worker.image.repository }}:{{ .Values.worker.image.tag }}"
+        imagePullPolicy: {{ .Values.worker.image.pullPolicy }}
+        env:
+        - name: MONGO_URL
+          value: "mongodb://msgapp-mongodb:27017/{{ .Values.mongodb.database }}"
+        - name: RABBITMQ_HOST
+          value: "msgapp-rabbitmq"
+        - name: RABBITMQ_USER
+          value: {{ .Values.rabbitmq.username | quote }}
+        - name: RABBITMQ_PASS
+          value: {{ .Values.rabbitmq.password | quote }}
+        - name: NODE_ENV
+          value: "production"
+        livenessProbe:
+          exec:
+            command:
+            - node
+            - -e
+            - "process.exit(0)"
+          initialDelaySeconds: 30
+          periodSeconds: 30
+        resources:
+          {{- toYaml .Values.worker.resources | nindent 10 }}

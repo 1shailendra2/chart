@@ -1,0 +1,6 @@
+apiVersion: v2
+name: msgapp
+description: A Helm chart for deploying msgapp frontend and backend with MongoDB
+type: application
+version: 0.1.0
+appVersion: "1.0.0"

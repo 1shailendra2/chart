@@ -1,0 +1,17 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: msgapp-frontend
+  labels:
+    app: msgapp
+    component: frontend
+spec:
+  type: {{ .Values.frontend.service.type }}
+  ports:
+    - port: {{ .Values.frontend.service.port }}
+      targetPort: http
+      protocol: TCP
+      name: http
+  selector:
+    app: msgapp
+    component: frontend

@@ -1,0 +1,132 @@
+# Default values for msgapp
+# This is a YAML-formatted file.
+# Declare variables to be passed into your templates.
+
+# Frontend configuration
+frontend:
+  replicaCount: 2
+  image:
+    repository: your-registry/msgapp-frontend
+    pullPolicy: IfNotPresent
+    tag: "latest"
+  service:
+    type: ClusterIP
+    port: 3000
+  resources:
+    limits:
+      cpu: 500m
+      memory: 512Mi
+    requests:
+      cpu: 250m
+      memory: 256Mi
+  autoscaling:
+    enabled: false  # Set to true to enable HPA
+    minReplicas: 2
+    maxReplicas: 10
+    targetCPUUtilizationPercentage: 80
+    targetMemoryUtilizationPercentage: 80
+
+# Backend configuration
+backend:
+  replicaCount: 2
+  image:
+    repository: your-registry/msgapp-backend
+    pullPolicy: IfNotPresent
+    tag: "latest"
+  service:
+    type: ClusterIP
+    port: 5000
+  env:
+    jwtSecret: "change-this-in-production"
+    port: "5000"
+  resources:
+    limits:
+      cpu: 500m
+      memory: 512Mi
+    requests:
+      cpu: 250m
+      memory: 256Mi
+  autoscaling:
+    enabled: false  # Set to true to enable HPA
+    minReplicas: 2
+    maxReplicas: 10
+    targetCPUUtilizationPercentage: 80
+    targetMemoryUtilizationPercentage: 80
+
+# Worker configuration (for async message processing)
+worker:
+  replicaCount: 2
+  image:
+    repository: your-registry/msgapp-worker
+    pullPolicy: IfNotPresent
+    tag: "latest"
+  resources:
+    limits:
+      cpu: 500m
+      memory: 512Mi
+    requests:
+      cpu: 250m
+      memory: 256Mi
+  autoscaling:
+    enabled: false  # Set to true to enable HPA
+    minReplicas: 1
+    maxReplicas: 10
+    targetCPUUtilizationPercentage: 80
+    targetMemoryUtilizationPercentage: 80
+
+# Redis configuration (caching layer)
+redis:
+  enabled: true
+  image:
+    repository: redis
+    tag: "7-alpine"
+
+# RabbitMQ configuration (message queue)
+rabbitmq:
+  enabled: true
+  username: "msgapp"
+  password: "change-this-in-production"
+  image:
+    repository: rabbitmq
+    tag: "3.13-management-alpine"
+
+# MongoDB configuration
+mongodb:
+  enabled: true
+  image:
+    repository: mongo
+    tag: "7.0"
+    pullPolicy: IfNotPresent
+  persistence:
+    enabled: true
+    storageClass: ""  # Use default storage class
+    size: 10Gi
+  resources:
+    limits:
+      cpu: 1000m
+      memory: 1Gi
+    requests:
+      cpu: 500m
+      memory: 512Mi
+  database: chatapp
+
+# Ingress configuration
+ingress:
+  enabled: true
+  className: "nginx"  # Change to your ingress controller class
+  annotations: {}
+    # Add custom annotations here if needed
+    # cert-manager.io/cluster-issuer: "letsencrypt-prod"
+  host: msgapp.local  # Change to your domain
+  tls:
+    enabled: false
+    secretName: msgapp-tls
+  paths:
+    frontend: /
+    backend: /api
+
+# Image pull secrets (if using private registry)
+imagePullSecrets: []
+
+# Common labels
+commonLabels: {}

@@ -1,0 +1,32 @@
+# Staging Environment Overrides
+
+# Moderate resources for staging
+frontend:
+  replicaCount: 2
+  autoscaling:
+    enabled: true
+    minReplicas: 2
+    maxReplicas: 5
+
+backend:
+  replicaCount: 2
+  autoscaling:
+    enabled: true
+    minReplicas: 2
+    maxReplicas: 5
+
+worker:
+  replicaCount: 1
+  autoscaling:
+    enabled: true
+    minReplicas: 1
+    maxReplicas: 3
+
+# Staging domain
+ingress:
+  host: msgapp-staging.example.com
+  tls:
+    enabled: true
+    secretName: msgapp-staging-tls
+  annotations:
+    cert-manager.io/cluster-issuer: "letsencrypt-staging"
