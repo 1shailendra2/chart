@@ -1,8 +1,3 @@
-# Default values for msgapp
-# This is a YAML-formatted file.
-# Declare variables to be passed into your templates.
-
-# Frontend configuration
 frontend:
   replicaCount: 2
   image:
@@ -20,13 +15,11 @@ frontend:
       cpu: 250m
       memory: 256Mi
   autoscaling:
-    enabled: false  # Set to true to enable HPA
+    enabled: false
     minReplicas: 2
     maxReplicas: 10
     targetCPUUtilizationPercentage: 80
     targetMemoryUtilizationPercentage: 80
-
-# Backend configuration
 backend:
   replicaCount: 2
   image:
@@ -47,13 +40,11 @@ backend:
       cpu: 250m
       memory: 256Mi
   autoscaling:
-    enabled: false  # Set to true to enable HPA
+    enabled: false
     minReplicas: 2
     maxReplicas: 10
     targetCPUUtilizationPercentage: 80
     targetMemoryUtilizationPercentage: 80
-
-# Worker configuration (for async message processing)
 worker:
   replicaCount: 2
   image:
@@ -68,20 +59,16 @@ worker:
       cpu: 250m
       memory: 256Mi
   autoscaling:
-    enabled: false  # Set to true to enable HPA
+    enabled: false
     minReplicas: 1
     maxReplicas: 10
     targetCPUUtilizationPercentage: 80
     targetMemoryUtilizationPercentage: 80
-
-# Redis configuration (caching layer)
 redis:
   enabled: true
   image:
     repository: redis
     tag: "7-alpine"
-
-# RabbitMQ configuration (message queue)
 rabbitmq:
   enabled: true
   username: "msgapp"
@@ -89,8 +76,6 @@ rabbitmq:
   image:
     repository: rabbitmq
     tag: "3.13-management-alpine"
-
-# MongoDB configuration
 mongodb:
   enabled: true
   image:
@@ -99,7 +84,7 @@ mongodb:
     pullPolicy: IfNotPresent
   persistence:
     enabled: true
-    storageClass: ""  # Use default storage class
+    storageClass: ""
     size: 10Gi
   resources:
     limits:
@@ -109,25 +94,17 @@ mongodb:
       cpu: 500m
       memory: 512Mi
   database: chatapp
-
-# Ingress configuration
 ingress:
   enabled: true
-  className: "nginx"  # Change to your ingress controller class
+  className: "nginx"
   annotations: {}
-    # Add custom annotations here if needed
-    # cert-manager.io/cluster-issuer: "letsencrypt-prod"
-  host: msgapp.local  # Change to your domain
+  host: msgapp.local
   tls:
     enabled: false
     secretName: msgapp-tls
   paths:
     frontend: /
     backend: /api
-
-# Image pull secrets (if using private registry)
 imagePullSecrets: 
   - name: acr-secret
-
-# Common labels
 commonLabels: {}

@@ -7,11 +7,10 @@ metadata:
     app: msgapp
     component: ingress
   annotations:
-    # Enable sticky sessions for Socket.io connections
     nginx.ingress.kubernetes.io/affinity: "cookie"
     nginx.ingress.kubernetes.io/affinity-mode: "persistent"
     nginx.ingress.kubernetes.io/session-cookie-name: "msgapp-sticky"
-    nginx.ingress.kubernetes.io/session-cookie-max-age: "10800"  # 3 hours
+    nginx.ingress.kubernetes.io/session-cookie-max-age: "10800"
     nginx.ingress.kubernetes.io/session-cookie-path: "/"
     {{- if .Values.ingress.annotations }}
     {{- toYaml .Values.ingress.annotations | nindent 4 }}
@@ -30,7 +29,6 @@ spec:
     - host: {{ .Values.ingress.host }}
       http:
         paths:
-          # Backend API routes - must come first for proper matching
           - path: /api
             pathType: Prefix
             backend:
@@ -38,7 +36,6 @@ spec:
                 name: msgapp-backend
                 port:
                   number: {{ .Values.backend.service.port }}
-          # Socket.io routes
           - path: /socket.io
             pathType: Prefix
             backend:
@@ -46,7 +43,6 @@ spec:
                 name: msgapp-backend
                 port:
                   number: {{ .Values.backend.service.port }}
-          # Frontend routes - catch all remaining paths
           - path: /
             pathType: Prefix
             backend:
