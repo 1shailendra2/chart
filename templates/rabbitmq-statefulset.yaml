@@ -32,7 +32,10 @@ spec:
         - name: RABBITMQ_DEFAULT_USER
           value: {{ .Values.rabbitmq.username | quote }}
         - name: RABBITMQ_DEFAULT_PASS
-          value: {{ .Values.rabbitmq.password | quote }}
+          valueFrom:
+            secretKeyRef:
+              name: msgapp-secrets
+              key: RABBITMQ_PASSWORD
         - name: RABBITMQ_DEFAULT_VHOST
           value: "/"
         volumeMounts:

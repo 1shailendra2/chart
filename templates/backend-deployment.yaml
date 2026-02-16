@@ -42,7 +42,15 @@ spec:
         - name: RABBITMQ_USER
           value: {{ .Values.rabbitmq.username | quote }}
         - name: RABBITMQ_PASS
-          value: {{ .Values.rabbitmq.password | quote }}
+          valueFrom:
+            secretKeyRef:
+              name: msgapp-secrets
+              key: RABBITMQ_PASSWORD
+        - name: JWT_SECRET
+          valueFrom:
+            secretKeyRef:
+              name: msgapp-secrets
+              key: JWT_SECRET
         livenessProbe:
           httpGet:
             path: /health

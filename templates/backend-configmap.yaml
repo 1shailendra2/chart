@@ -8,4 +8,3 @@ metadata:
 data:
   MONGO_URL: "mongodb://msgapp-mongodb:27017/{{ .Values.mongodb.database }}"
   PORT: "{{ .Values.backend.service.port }}"
-  JWT_SECRET: "{{ .Values.backend.env.jwtSecret }}"

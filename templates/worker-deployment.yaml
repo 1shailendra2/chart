@@ -33,7 +33,10 @@ spec:
         - name: RABBITMQ_USER
           value: {{ .Values.rabbitmq.username | quote }}
         - name: RABBITMQ_PASS
-          value: {{ .Values.rabbitmq.password | quote }}
+          valueFrom:
+            secretKeyRef:
+              name: msgapp-secrets
+              key: RABBITMQ_PASSWORD
         - name: NODE_ENV
           value: "production"
         livenessProbe:
