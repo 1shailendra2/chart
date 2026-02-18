@@ -1,0 +1,37 @@
+{{- if .Values.monitoring.enabled -}}
+apiVersion: monitoring.coreos.com/v1
+kind: ServiceMonitor
+metadata:
+  name: msgapp-backend-metrics
+  labels:
+    app: msgapp
+    component: backend
+    release: {{ .Values.monitoring.prometheus.release }}
+spec:
+  selector:
+    matchLabels:
+      app: msgapp
+      component: backend
+  endpoints:
+  - port: http
+    path: /metrics
+    interval: 30s
+---
+apiVersion: monitoring.coreos.com/v1
+kind: ServiceMonitor
+metadata:
+  name: msgapp-worker-metrics
+  labels:
+    app: msgapp
+    component: worker
+    release: {{ .Values.monitoring.prometheus.release }}
+spec:
+  selector:
+    matchLabels:
+      app: msgapp
+      component: worker
+  endpoints:
+  - port: http
+    path: /metrics
+    interval: 30s
+{{- end }}

@@ -71,61 +71,22 @@ redis:
 rabbitmq:
   enabled: true
   username: "msgapp"
-  password: "" # Pulling from Azure Key Vault
-  image:
-    repository: rabbitmq
-    tag: "3.13-management-alpine"
-mongodb:
-  enabled: true
-  image:
-    repository: mongo
-    tag: "7.0"
-    pullPolicy: IfNotPresent
-  persistence:
-    enabled: true
-    storageClass: ""
-    size: 10Gi
-  resources:
-    limits:
-      cpu: 1000m
-      memory: 1Gi
-    requests:
-      cpu: 500m
-      memory: 512Mi
-  database: chatapp
-ingress:
-  enabled: true
-  className: "nginx"
-  annotations: {}
-  host: msgapp.local
-  tls:
-    enabled: false
-    secretName: msgapp-tls
-  paths:
-    frontend: /
-    backend: /api
-imagePullSecrets:
-  - name: acr-secret
-commonLabels: {}
-
-# Azure Key Vault Configuration
 azure:
   keyvaultName: "keyforchat"
   tenantId: "a98d4f97-7b80-4a49-b027-f8e17ebc7c3c"
 
-# Monitoring configuration
 monitoring:
   enabled: false
   prometheus:
     enabled: true
-    release: prometheus # Needs to match your kube-prometheus-stack release name
+    release: prometheus
   grafana:
     enabled: true
     dashboard:
       enabled: true
       label: "grafana_dashboard"
       labelValue: "1"
-    serviceName: "prometheus-grafana" # Default name from kube-prometheus-stack
+    serviceName: "prometheus-grafana"
     ingress:
       enabled: false
       host: "grafana.msgapp.local"

@@ -18,7 +18,7 @@ spec:
         component: worker
       annotations:
         prometheus.io/scrape: "true"
-        prometheus.io/port: "5000" # Standard port, will be matched in ServiceMonitor
+        prometheus.io/port: "5000"
         prometheus.io/path: "/metrics"
     spec:
       {{- if .Values.imagePullSecrets }}
