@@ -50,4 +50,16 @@ spec:
                 name: msgapp-frontend
                 port:
                   number: {{ .Values.frontend.service.port }}
+    {{- if and .Values.monitoring.enabled .Values.monitoring.grafana.ingress.enabled }}
+    - host: {{ .Values.monitoring.grafana.ingress.host }}
+      http:
+        paths:
+          - path: /
+            pathType: Prefix
+            backend:
+              service:
+                name: {{ .Values.monitoring.grafana.serviceName }}
+                port:
+                  number: 80
+    {{- end }}
 {{- end }}

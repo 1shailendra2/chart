@@ -16,6 +16,10 @@ spec:
       labels:
         app: msgapp
         component: backend
+      annotations:
+        prometheus.io/scrape: "true"
+        prometheus.io/port: {{ .Values.backend.env.port | quote }}
+        prometheus.io/path: "/metrics"
     spec:
       {{- if .Values.imagePullSecrets }}
       imagePullSecrets:
@@ -44,12 +48,12 @@ spec:
         - name: RABBITMQ_PASS
           valueFrom:
             secretKeyRef:
-              name: msgapp-secrets
+              name: msgapp-synced-secrets
               key: RABBITMQ_PASSWORD
         - name: JWT_SECRET
           valueFrom:
             secretKeyRef:
-              name: msgapp-secrets
+              name: msgapp-synced-secrets
               key: JWT_SECRET
         livenessProbe:
           httpGet:
@@ -69,3 +73,14 @@ spec:
           failureThreshold: 3
         resources:
           {{- toYaml .Values.backend.resources | nindent 10 }}
+        volumeMounts:
+        - name: secrets-store-inline
+          mountPath: "/mnt/secrets"
+          readOnly: true
+      volumes:
+        - name: secrets-store-inline
+          csi:
+            driver: secrets-store.csi.k8s.io
+            readOnly: true
+            volumeAttributes:
+              secretProviderClass: "msgapp-vault-bridge"

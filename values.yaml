@@ -30,7 +30,6 @@ backend:
     type: ClusterIP
     port: 5000
   env:
-    jwtSecret: "change-this-in-production"
     port: "5000"
   resources:
     limits:
@@ -72,7 +71,7 @@ redis:
 rabbitmq:
   enabled: true
   username: "msgapp"
-  password: "change-this-in-production"
+  password: "" # Pulling from Azure Key Vault
   image:
     repository: rabbitmq
     tag: "3.13-management-alpine"
@@ -105,6 +104,28 @@ ingress:
   paths:
     frontend: /
     backend: /api
-imagePullSecrets: 
+imagePullSecrets:
   - name: acr-secret
 commonLabels: {}
+
+# Azure Key Vault Configuration
+azure:
+  keyvaultName: "keyforchat"
+  tenantId: "a98d4f97-7b80-4a49-b027-f8e17ebc7c3c"
+
+# Monitoring configuration
+monitoring:
+  enabled: false
+  prometheus:
+    enabled: true
+    release: prometheus # Needs to match your kube-prometheus-stack release name
+  grafana:
+    enabled: true
+    dashboard:
+      enabled: true
+      label: "grafana_dashboard"
+      labelValue: "1"
+    serviceName: "prometheus-grafana" # Default name from kube-prometheus-stack
+    ingress:
+      enabled: false
+      host: "grafana.msgapp.local"

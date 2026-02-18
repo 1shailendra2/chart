@@ -16,6 +16,10 @@ spec:
       labels:
         app: msgapp
         component: worker
+      annotations:
+        prometheus.io/scrape: "true"
+        prometheus.io/port: "5000" # Standard port, will be matched in ServiceMonitor
+        prometheus.io/path: "/metrics"
     spec:
       {{- if .Values.imagePullSecrets }}
       imagePullSecrets:
@@ -35,7 +39,7 @@ spec:
         - name: RABBITMQ_PASS
           valueFrom:
             secretKeyRef:
-              name: msgapp-secrets
+              name: msgapp-synced-secrets
               key: RABBITMQ_PASSWORD
         - name: NODE_ENV
           value: "production"
@@ -49,3 +53,14 @@ spec:
           periodSeconds: 30
         resources:
           {{- toYaml .Values.worker.resources | nindent 10 }}
+        volumeMounts:
+        - name: secrets-store-inline
+          mountPath: "/mnt/secrets"
+          readOnly: true
+      volumes:
+        - name: secrets-store-inline
+          csi:
+            driver: secrets-store.csi.k8s.io
+            readOnly: true
+            volumeAttributes:
+              secretProviderClass: "msgapp-vault-bridge"
