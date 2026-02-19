@@ -1,0 +1,21 @@
+config:
+  target: "http://msgapp.local" # Change to your actual Ingress IP/Host
+  phases:
+    - duration: 60
+      arrivalRate: 10
+      rampTo: 166
+      name: "Ramping to 10k Users"
+  defaults:
+    headers:
+      Content-Type: "application/json"
+
+scenarios:
+  - name: "User sends a message"
+    flow:
+      - post:
+          url: "/api/messages"
+          json:
+            roomId: "lobby"
+            content: "Hello from Artillery!"
+      - get:
+          url: "/api/messages/lobby"
