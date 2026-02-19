@@ -11,19 +11,23 @@ frontend:
       cpu: 100m
       memory: 128Mi
   autoscaling:
-    enabled: false
+    enabled: true
+    minReplicas: 2
+    maxReplicas: 5
 
 backend:
   replicaCount: 1
   resources:
     limits:
-      cpu: 250m
-      memory: 256Mi
+      cpu: 1000m
+      memory: 1Gi
     requests:
-      cpu: 100m
-      memory: 128Mi
+      cpu: 500m
+      memory: 512Mi
   autoscaling:
-    enabled: false
+    enabled: true
+    minReplicas: 10
+    maxReplicas: 50
 
 worker:
   replicaCount: 1

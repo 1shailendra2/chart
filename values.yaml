@@ -1,3 +1,5 @@
+imagePullSecrets:
+  - name: acr-secret
 frontend:
   replicaCount: 2
   image:
