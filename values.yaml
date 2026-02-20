@@ -104,7 +104,7 @@ azure:
   tenantId: "a98d4f97-7b80-4a49-b027-f8e17ebc7c3c"
 
 monitoring:
-  enabled: false
+  enabled: true
   prometheus:
     enabled: true
     release: prometheus
