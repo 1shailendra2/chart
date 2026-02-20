@@ -1,5 +1,24 @@
 imagePullSecrets:
   - name: acr-secret
+mongodb:
+  enabled: true
+  image:
+    repository: mongo
+    tag: "7.0"
+    pullPolicy: IfNotPresent
+  database: msgapp
+  replicaCount: 1
+  resources:
+    limits:
+      cpu: 500m
+      memory: 512Mi
+    requests:
+      cpu: 250m
+      memory: 256Mi
+  persistence:
+    enabled: true
+    size: 5Gi
+    storageClass: ""
 frontend:
   replicaCount: 2
   image:
