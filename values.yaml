@@ -61,8 +61,8 @@ backend:
       memory: 512Mi
   autoscaling:
     enabled: true
-    minReplicas: 10
-    maxReplicas: 50
+    minReplicas: 2
+    maxReplicas: 5
     targetCPUUtilizationPercentage: 70
     targetMemoryUtilizationPercentage: 80
 worker:
