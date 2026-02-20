@@ -73,14 +73,3 @@ spec:
           failureThreshold: 3
         resources:
           {{- toYaml .Values.backend.resources | nindent 10 }}
-        volumeMounts:
-        - name: secrets-store-inline
-          mountPath: "/mnt/secrets"
-          readOnly: true
-      volumes:
-        - name: secrets-store-inline
-          csi:
-            driver: secrets-store.csi.k8s.io
-            readOnly: true
-            volumeAttributes:
-              secretProviderClass: "msgapp-vault-bridge"

@@ -53,14 +53,3 @@ spec:
           periodSeconds: 30
         resources:
           {{- toYaml .Values.worker.resources | nindent 10 }}
-        volumeMounts:
-        - name: secrets-store-inline
-          mountPath: "/mnt/secrets"
-          readOnly: true
-      volumes:
-        - name: secrets-store-inline
-          csi:
-            driver: secrets-store.csi.k8s.io
-            readOnly: true
-            volumeAttributes:
-              secretProviderClass: "msgapp-vault-bridge"
