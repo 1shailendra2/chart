@@ -92,6 +92,13 @@ redis:
 rabbitmq:
   enabled: true
   username: "msgapp"
+  resources:
+    limits:
+      cpu: 1000m
+      memory: 2Gi
+    requests:
+      cpu: 500m
+      memory: 1Gi
 azure:
   keyvaultName: "keyforchat"
   tenantId: "a98d4f97-7b80-4a49-b027-f8e17ebc7c3c"
