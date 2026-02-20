@@ -7,7 +7,7 @@ metadata:
     - resources-finalizer.argocd.argoproj.io
 spec:
   project: default
-  
+
   source:
     repoURL: https://github.com/1shailendra2/chart.git
     targetRevision: main
@@ -16,15 +16,15 @@ spec:
       valueFiles:
         - values.yaml
         - environments/values-dev.yaml
-  
+
   destination:
     server: https://kubernetes.default.svc
     namespace: msgapp-dev
-  
+
   syncPolicy:
     automated:
-      prune: true       # Delete resources when removed from Git
-      selfHeal: true    # Auto-sync when cluster state differs from Git
+      prune: true
+      selfHeal: true
       allowEmpty: false
     syncOptions:
       - CreateNamespace=true
@@ -36,10 +36,9 @@ spec:
         duration: 5s
         factor: 2
         maxDuration: 3m
-  
-  # Health assessment
+
   ignoreDifferences:
     - group: apps
       kind: Deployment
       jsonPointers:
-        - /spec/replicas  # Ignore HPA-managed replicas
+        - /spec/replicas

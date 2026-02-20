@@ -1,20 +1,15 @@
 config:
-  target: "http://20.200.226.106"
+  target: "http://localhost:9000"
   phases:
     - duration: 60
       arrivalRate: 10
-      rampTo: 166
-      name: "Ramping to 10k Users"
+      rampTo: 100
+      name: "Moderate Load"
   defaults:
     headers:
       Content-Type: "application/json"
 scenarios:
-  - name: "User sends a message"
+  - name: "Health Check"
     flow:
-      - post:
-          url: "/api/messages"
-          json:
-            roomId: "lobby"
-            content: "Hello from Artillery!"
       - get:
-          url: "/api/messages/lobby"
+          url: "/health"

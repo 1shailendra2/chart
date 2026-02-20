@@ -1,6 +1,3 @@
-# Production Environment Overrides
-
-# Production-grade resources
 frontend:
   replicaCount: 3
   resources:
@@ -48,12 +45,10 @@ worker:
     maxReplicas: 10
     targetCPUUtilizationPercentage: 75
 
-# Production RabbitMQ credentials
 rabbitmq:
   username: "msgapp-prod"
   password: "REPLACE_WITH_SECURE_PASSWORD"
 
-# Production MongoDB
 mongodb:
   persistence:
     size: 50Gi
@@ -65,7 +60,6 @@ mongodb:
       cpu: 1000m
       memory: 2Gi
 
-# Production domain with TLS
 ingress:
   host: msgapp.example.com
   tls:
