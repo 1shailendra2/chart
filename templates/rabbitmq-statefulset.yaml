@@ -17,60 +17,71 @@ spec:
       labels:
         app: msgapp
         component: rabbitmq
+        azure.workload.identity/use: "true"
     spec:
       containers:
-      - name: rabbitmq
-        image: rabbitmq:3.13-management-alpine
-        ports:
-        - containerPort: 5672
-          name: amqp
-          protocol: TCP
-        - containerPort: 15672
-          name: management
-          protocol: TCP
-        env:
-        - name: RABBITMQ_DEFAULT_USER
-          value: {{ .Values.rabbitmq.username | quote }}
-        - name: RABBITMQ_DEFAULT_PASS
-          valueFrom:
-            secretKeyRef:
-              name: msgapp-synced-secrets
-              key: RABBITMQ_PASSWORD
-        - name: RABBITMQ_DEFAULT_VHOST
-          value: "/"
-        volumeMounts:
-        - name: rabbitmq-data
-          mountPath: /var/lib/rabbitmq
-        livenessProbe:
-          exec:
-            command:
-            - rabbitmq-diagnostics
-            - ping
-          initialDelaySeconds: 120
-          periodSeconds: 30
-          timeoutSeconds: 10
-          failureThreshold: 3
-        readinessProbe:
-          exec:
-            command:
-            - rabbitmq-diagnostics
-            - check_port_connectivity
-          initialDelaySeconds: 60
-          periodSeconds: 10
-          timeoutSeconds: 10
-          failureThreshold: 3
-        resources:
-          limits:
-            cpu: 1000m
-            memory: 1Gi
-          requests:
-            cpu: 500m
-            memory: 512Mi
+        - name: rabbitmq
+          image: rabbitmq:3.13-management-alpine
+          ports:
+            - containerPort: 5672
+              name: amqp
+              protocol: TCP
+            - containerPort: 15672
+              name: management
+              protocol: TCP
+          env:
+            - name: RABBITMQ_DEFAULT_USER
+              value: "{{ .Values.rabbitmq.username }}"
+            - name: RABBITMQ_DEFAULT_PASS
+              valueFrom:
+                secretKeyRef:
+                  name: msgapp-synced-secrets
+                  key: RABBITMQ_PASSWORD
+            - name: RABBITMQ_DEFAULT_VHOST
+              value: "/"
+          volumeMounts:
+            - name: rabbitmq-data
+              mountPath: /var/lib/rabbitmq
+            - name: secrets-store
+              mountPath: /mnt/secrets-store
+              readOnly: true
+          livenessProbe:
+            exec:
+              command:
+                - rabbitmq-diagnostics
+                - ping
+            initialDelaySeconds: 120
+            periodSeconds: 30
+            timeoutSeconds: 10
+            failureThreshold: 3
+          readinessProbe:
+            exec:
+              command:
+                - rabbitmq-diagnostics
+                - check_port_connectivity
+            initialDelaySeconds: 60
+            periodSeconds: 10
+            timeoutSeconds: 10
+            failureThreshold: 3
+          resources:
+            limits:
+              cpu: 1000m
+              memory: 1Gi
+            requests:
+              cpu: 500m
+              memory: 512Mi
+      volumes:
+        - name: secrets-store
+          csi:
+            driver: secrets-store.csi.k8s.io
+            readOnly: true
+            volumeAttributes:
+              secretProviderClass: msgapp-azure-keyvault
   volumeClaimTemplates:
-  - metadata:
-      name: rabbitmq-data
-    spec:
-      accessModes: [ "ReadWriteOnce" ]
-      resources:
-        requests:
-          storage: 5Gi
+    - metadata:
+        name: rabbitmq-data
+      spec:
+        accessModes: ["ReadWriteOnce"]
+        resources:
+          requests:
+            storage: 5Gi

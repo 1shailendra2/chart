@@ -16,6 +16,7 @@ spec:
       labels:
         app: msgapp
         component: worker
+        azure.workload.identity/use: "true"
       annotations:
         prometheus.io/scrape: "true"
         prometheus.io/port: "5000"
@@ -53,3 +54,14 @@ spec:
           periodSeconds: 30
         resources:
           {{- toYaml .Values.worker.resources | nindent 10 }}
+        volumeMounts:
+        - name: secrets-store
+          mountPath: /mnt/secrets-store
+          readOnly: true
+      volumes:
+      - name: secrets-store
+        csi:
+          driver: secrets-store.csi.k8s.io
+          readOnly: true
+          volumeAttributes:
+            secretProviderClass: msgapp-azure-keyvault
