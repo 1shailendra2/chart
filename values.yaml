@@ -102,7 +102,7 @@ rabbitmq:
 azure:
   keyvaultName: "keyforchat"
   tenantId: "a98d4f97-7b80-4a49-b027-f8e17ebc7c3c"
-  clientId: "0ee43d45-418d-4df2-8cb3-fa2a6aef7fb4"
+  clientId: "425e9191-5b26-4492-8afb-53efebc721be"
 
 ingress:
   enabled: false
