@@ -105,8 +105,8 @@ azure:
   clientId: "425e9191-5b26-4492-8afb-53efebc721be"
 
 ingress:
-  enabled: false
-  host: "msgapp.local"
+  enabled: true
+  host: "secondbrainbackend.me"
 
 monitoring:
   enabled: true
